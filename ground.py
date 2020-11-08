@@ -50,6 +50,10 @@ def job():
         arrow_move.click()
         sleep(3)
 
+        # # ONLY WHEN BOOKING ON MONDAY
+        # arrow_move.click()
+        # sleep(3)
+
         type_box = Select(driver.find_element_by_xpath("//div[@id='selector_type']/select[1]"))
         type_box.select_by_index(1)
         sleep(1)
@@ -58,52 +62,44 @@ def job():
         pass
 
 
+def booking_hour(hour):
+    try:
+        padel_table = driver.find_element_by_xpath(f"//div[@class='fc-view-container']/div[@class='fc-view fc-basicWeek-view fc-basic-view']/table/tbody[@class='fc-body']/tr/td/div[@class='fc-day-grid-container']/div[@class='fc-day-grid']/div[@class='fc-row fc-week fc-widget-content']/div[@class='fc-content-skeleton']/table/tbody/tr[{hour}]/td[1]")
+        padel_table.click()
+        sleep(1)
+    except:
+        pass
+
+    try:
+        tilmeld = driver.find_element_by_xpath("//div[@class='modal-dialog']/div[@class='modal-content']/div[@class='modal-footer ng-scope']/button[@ng-click='bookEvent()']")
+        tilmeld.click()
+    except:
+        pass
+
+    try:
+        cancel = driver.find_element_by_xpath("//div[@class='modal-dialog']/div[@class='modal-content']/div[@class='modal-footer ng-scope']/button[@ng-click='cancel()']")
+        cancel.click()
+
+    except:
+        pass
+
+    sleep(1)
+
 def book():
 
     kategori_box = Select(driver.find_element_by_xpath("//select[@ng-model='selectedCategory']"))
     kategori_box.select_by_index(3)
-    sleep(1)
+    sleep(2)
 
-
-    try:
-        padel_table = driver.find_element_by_xpath("//div[@class='fc-view-container']/div[@class='fc-view fc-basicWeek-view fc-basic-view']/table/tbody[@class='fc-body']/tr/td/div[@class='fc-day-grid-container']/div[@class='fc-day-grid']/div[@class='fc-row fc-week fc-widget-content']/div[@class='fc-content-skeleton']/table/tbody/tr[13]/td[1]")
-        padel_table.click()
-        sleep(1)
-
-        tilmeld = driver.find_element_by_xpath("//div[@class='modal-dialog']/div[@class='modal-content']/div[@class='modal-footer ng-scope']/button[@ng-click='bookEvent()']")
-        tilmeld.click()
-        sleep(1)
-    except:
-        pass
-
-    try:
-        padel_table = driver.find_element_by_xpath("//div[@class='fc-view-container']/div[@class='fc-view fc-basicWeek-view fc-basic-view']/table/tbody[@class='fc-body']/tr/td/div[@class='fc-day-grid-container']/div[@class='fc-day-grid']/div[@class='fc-row fc-week fc-widget-content']/div[@class='fc-content-skeleton']/table/tbody/tr[14]/td[1]")
-        padel_table.click()
-        sleep(1)
-
-        tilmeld = driver.find_element_by_xpath("//div[@class='modal-dialog']/div[@class='modal-content']/div[@class='modal-footer ng-scope']/button[@ng-click='bookEvent()']")
-        tilmeld.click()
-        sleep(1)
-    except:
-        pass
-
-    try:
-        padel_table = driver.find_element_by_xpath("//div[@class='fc-view-container']/div[@class='fc-view fc-basicWeek-view fc-basic-view']/table/tbody[@class='fc-body']/tr/td/div[@class='fc-day-grid-container']/div[@class='fc-day-grid']/div[@class='fc-row fc-week fc-widget-content']/div[@class='fc-content-skeleton']/table/tbody/tr[15]/td[1]")
-        padel_table.click()
-        sleep(1)
-
-        tilmeld = driver.find_element_by_xpath("//div[@class='modal-dialog']/div[@class='modal-content']/div[@class='modal-footer ng-scope']/button[@ng-click='bookEvent()']")
-        tilmeld.click()
-        sleep(1)
-    except:
-        pass
+    booking_hour(13)
+    booking_hour(14)
+    booking_hour(15)
 
     driver.quit()
     print("Finished")
 
-
 schedule.every().day.at("23:59").do(job)
-schedule.every().day.at("00:00").do(job)
+schedule.every().day.at("00:00").do(book)
 
 while True:
     schedule.run_pending()
