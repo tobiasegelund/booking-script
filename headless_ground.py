@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import Select, WebDriverWait
+from pyvirtualdisplay import Display
 import schedule
 from credentials import username, password, username1, password1
 
@@ -12,8 +13,13 @@ from credentials import username, password, username1, password1
 usr = username  # Insert your own username
 pwd = password  # Insert your own password
 
-driver = webdriver.Chrome(ChromeDriverManager().install())
-
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+driver = webdriver.Chrome('/usr/bin/chromedriver',
+                          chrome_options=chrome_options)
+display = Display(visible=0, size=(1024, 768))
+display.start()
 
 def job():
     driver.get('https://booking.sport-solutions.dk/login/da-DK?issue=false')
